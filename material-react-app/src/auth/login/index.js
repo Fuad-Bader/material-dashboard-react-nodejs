@@ -13,6 +13,7 @@ import MuiLink from "@mui/material/Link";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import GoogleIcon from "@mui/icons-material/Google";
+import MicrosoftIcon from '@mui/icons-material/Microsoft';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -33,7 +34,7 @@ function Login() {
   const authContext = useContext(AuthContext);
 
   const [user, setUser] = useState({});
-  const [credentialsErros, setCredentialsError] = useState(null);
+  const [credentialsErrors, setCredentialsError] = useState(null);
   const [rememberMe, setRememberMe] = useState(false);
 
   const [inputs, setInputs] = useState({
@@ -58,7 +59,7 @@ function Login() {
   };
 
   const submitHandler = async (e) => {
-    // check rememeber me?
+    // check remember me?
     e.preventDefault();
 
     const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -89,10 +90,13 @@ function Login() {
     } catch (res) {
       if (res.hasOwnProperty("message")) {
         setCredentialsError(res.message);
-      } else {
+      } else if (res.errors && res.errors.length > 0) { // Check if res.errors is defined and not empty
         setCredentialsError(res.errors[0].detail);
+      } else {
+        setCredentialsError("An unexpected error occurred."); // Handle other cases gracefully
       }
     }
+
 
     return () => {
       setInputs({
@@ -132,7 +136,7 @@ function Login() {
             </Grid>
             <Grid item xs={2}>
               <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GitHubIcon color="inherit" />
+                <MicrosoftIcon color="inherit" />
               </MDTypography>
             </Grid>
             <Grid item xs={2}>
@@ -183,9 +187,9 @@ function Login() {
                 sign in
               </MDButton>
             </MDBox>
-            {credentialsErros && (
+            {credentialsErrors && (
               <MDTypography variant="caption" color="error" fontWeight="light">
-                {credentialsErros}
+                {credentialsErrors}
               </MDTypography>
             )}
             <MDBox mt={3} mb={1} textAlign="center">
