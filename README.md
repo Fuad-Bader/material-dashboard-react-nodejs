@@ -677,7 +677,7 @@ Within the download you'll find the following directories and files:
 ├── routes.js
 └── services
     ├── auth-service.js
-    ├── htttp.service.js
+    ├── http.service.js
     └── interceptor.js
 ```
 
